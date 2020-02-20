@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
 
     //Clicking this will turn on notifications
     public void yesNotify(View view){
+        //Change text to show notifications turned on
         TextView status = findViewById(R.id.currStat);
         status.setText("Notifications are turned ON");
 
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
 
     //Clicking this will turn off notifications
     public void noNotify(View view){
+        //Change text to show notifications turned off
         TextView status = findViewById(R.id.currStat);
         status.setText("Notifications are turned OFF");
 
