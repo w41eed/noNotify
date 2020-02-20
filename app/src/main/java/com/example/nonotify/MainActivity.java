@@ -1,6 +1,6 @@
 package com.example.nonotify;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -13,7 +13,7 @@ import android.service.notification.NotificationListenerService;
 
 public class MainActivity extends Activity {
 
-
+    dndHandler dnd = new dndHandler();
 
 
     @Override
@@ -25,24 +25,17 @@ public class MainActivity extends Activity {
     //Clicking this will turn on notifications
     public void yesNotify(View view){
         TextView status = findViewById(R.id.currStat);
-
-
-
-        NotificationManager nM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nM.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
-
-
         status.setText("Notifications are turned ON");
+
+        dnd.turnOffDnd(this);
     }
 
     //Clicking this will turn off notifications
     public void noNotify(View view){
         TextView status = findViewById(R.id.currStat);
-
-        NotificationManager nM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        
-        nM.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
         status.setText("Notifications are turned OFF");
+
+        dnd.turnOnDnd(this);
     }
 
 

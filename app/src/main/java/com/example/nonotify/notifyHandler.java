@@ -16,12 +16,52 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class notifyHandler extends NotificationListenerService {
 
-    Context context;
+
+        @Override
+        public IBinder onBind(Intent intent) {
+            return super.onBind(intent);
+        }
+
+        @Override
+        public void onNotificationPosted(StatusBarNotification sbn){
+            //TO-DO
+        }
+
+        @Override
+        public void onNotificationRemoved(StatusBarNotification sbn){
+            //TO-DO
+        }
+
+
+
+
+
+}
+
+
+
+
+    /*
     @Override
-    public void onCreate() {
-        super.onCreate();
-        context = getApplicationContext();
+    public void onListenerConnected() {
+        super.onListenerConnected();
+        //here is where we disable the notifications
+        NotificationManager notification = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        StatusBarNotification[] n = notification.getActiveNotifications();
+        Log.d("MainActivity.java", Integer.toString(n.length));
+//                        TextView check2 = (TextView) findViewById(R.id.didPackagework);
+//                            check2.setText(n.toString());
+        for(int i = 0; i < n.length; i++) {
+            Log.d("MainActivity.java", n[i].toString() );
+            //                           TextView mylist = (TextView) findViewById(R.id.didPackagework);
+//                            mylist.setText(n[i].toString());
+        }
+        Log.d("MyNLS.java", "in here");
+
+        StatusBarNotification[] notifications = getActiveNotifications();
+//        notifications.getPackageName();
     }
+
 
 
 
@@ -66,26 +106,7 @@ public class notifyHandler extends NotificationListenerService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
     }
-
-    @Override
-    public void onListenerConnected() {
-        super.onListenerConnected();
-        //here is where we disable the notifications
-        NotificationManager notification = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        StatusBarNotification[] n = notification.getActiveNotifications();
-        Log.d("MainActivity.java", Integer.toString(n.length));
-//                        TextView check2 = (TextView) findViewById(R.id.didPackagework);
-//                            check2.setText(n.toString());
-        for(int i = 0; i < n.length; i++) {
-            Log.d("MainActivity.java", n[i].toString() );
-            //                           TextView mylist = (TextView) findViewById(R.id.didPackagework);
-//                            mylist.setText(n[i].toString());
-        }
-        Log.d("MyNLS.java", "in here");
-
-        StatusBarNotification[] notifications = getActiveNotifications();
-//        notifications.getPackageName();
-    }
+    */
 
 
-}
+
