@@ -2,18 +2,21 @@ package com.example.nonotify;
 
 
 
+
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.service.notification.NotificationListenerService;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends Activity {
 
-    dndHandler dnd = new dndHandler();
+    //Pass Context and Activity to dndHandler
+    dndHandler dnd = new dndHandler(this,this);
 
 
     @Override
@@ -22,25 +25,55 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
     }
 
-    //Clicking this will turn on notifications
-    public void yesNotify(View view){
-        //Change text to show notifications turned on
-        TextView status = findViewById(R.id.currStat);
-        status.setText("Notifications are turned ON");
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] results){
 
-        dnd.turnOffDnd(this);
+        super.onRequestPermissionsResult(requestCode, permissions, results);
+
+        if(requestCode == dnd.MY_PERMISSION_NOTIFICATION_POLICY && results[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+
+        }
     }
+    */
 
-    //Clicking this will turn off notifications
+
+    //Clicking this will turn OFF notifications by turning ON Do not disturb
     public void noNotify(View view){
-        //Change text to show notifications turned off
+        //Changes text to show notifications turned off
         TextView status = findViewById(R.id.currStat);
         status.setText("Notifications are turned OFF");
 
-        dnd.turnOnDnd(this);
+        dnd.checkDndPermission();
+        if(dnd.dndPermission){
+            dnd.turnOnDnd();
+        }
+
+
+        /*if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY ) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY}, dnd.MY_PERMISSION_NOTIFICATION_POLICY);
+
+        } else {
+            Toast.makeText(this, "permission already granted", Toast.LENGTH_SHORT).show();
+        }*/
+
     }
 
+    //Clicking this will turn ON notifications by turning OFF Do not disturb
+    public void yesNotify(View view){
+        //Changes text to show notifications turned on
+        TextView status = findViewById(R.id.currStat);
+        status.setText("Notifications are turned ON");
 
+        dnd.checkDndPermission();
+        if(dnd.dndPermission){
+            dnd.turnOffDnd();
+        }
+
+    }
 
 
 }
