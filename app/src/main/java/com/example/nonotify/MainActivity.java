@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat;
 public class MainActivity extends Activity {
 
     //Pass Context and Activity to dndHandler
-    dndHandler dnd = new dndHandler(this,this);
+    dndHandler dnd;
 
 
     @Override
@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        dnd = new dndHandler(this);
         dnd.checkDndPermission();
     }
 

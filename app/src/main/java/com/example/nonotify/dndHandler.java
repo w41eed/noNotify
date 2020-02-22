@@ -7,32 +7,35 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Handler;
+import android.util.Log;
 
+import static android.content.ContentValues.TAG;
 import static java.sql.Types.NULL;
 
 
 public class dndHandler {
 
     public boolean dndPermission = false;
-    private Context mainContext;
+    private NotificationManager nManager;
     private Activity mainActivity;
 
 
     //Constructor
-    public dndHandler(Context context, Activity activity){
-        mainContext = context;
+    //Use inside onCreate of MainActivity
+    public dndHandler(Activity activity){
         mainActivity = activity;
+        nManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
     }
-
 
 
     //Checks if app has access to Do not disturb
     //If no access then prompts user to give permission
+    //Call every time before you access Do not disturb
     public void checkDndPermission(){
-        NotificationManager nManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (!nManager.isNotificationPolicyAccessGranted()) {
-
             dndPermission = false;
             //Ask for permission
             dndPermissionDialog();
@@ -40,9 +43,7 @@ public class dndHandler {
          else {
             dndPermission = true;
         }
-
     }
-
 
 
     public void dndPermissionDialog(){
@@ -54,16 +55,18 @@ public class dndHandler {
         //If user agrees to grant access then move to notification settings
         builder.setPositiveButton(R.string.dnd_dialog_allow, new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int id){
+                //After clicks 'Allow'
                 Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
                 mainActivity.startActivity(intent);
                 mainActivity.overridePendingTransition(NULL, NULL);
+
             }
         });
 
         //If user doesn't allow access
         builder.setNegativeButton(R.string.dnd_dialog_cancel, new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int id){
-
+            public void onClick(DialogInterface dialog, int id) {
+                //After user clicks 'Do Not Allow'
             }
         });
 
@@ -72,19 +75,14 @@ public class dndHandler {
     }
 
 
-
-
-
     //Will turn ON Do Not Disturb
     public void turnOnDnd(){
-        NotificationManager nManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         nManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
     }
 
 
     //Will turn OFF Do Not Disturb
     public void turnOffDnd(){
-        NotificationManager nManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         nManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
     }
 
